@@ -17,14 +17,14 @@ class AdminSeeder extends Seeder
 
         $admin = User::create([
             "name" => "System Admin",
-            "email" => "dmt@sifal.deerwalk.edu.np",
+            "email" => "dmt@dhading.deerwalk.edu.np",
             "password" => bcrypt("password")
             // New Passowrd: WithLoveFromDMT2024
         ]);
 
         $schoolAdmin = User::create([
             "name" => "ARMS Admin",
-            "email" => "admin@sifal.deerwalk.edu.np",
+            "email" => "admin@dhading.deerwalk.edu.np",
             "password" => bcrypt("admin123"),
             // New Passowrd: armsadmin2024
 
