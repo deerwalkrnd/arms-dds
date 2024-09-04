@@ -405,7 +405,7 @@
                 },
                 "series": {
                     0: {
-                        color: '#EF7634'
+                        color: '#00B3E6'
                     }
                 },
 
@@ -567,7 +567,7 @@
 
                 "series": {
                     0: {
-                        color: '#EF7634'
+                        color: '#00B3E6'
                     }
                 },
                 "vAxis": {

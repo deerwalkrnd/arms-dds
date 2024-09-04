@@ -274,7 +274,7 @@
 
                                 const context = document.getElementById("exam_" + key);
                                 let dataForGraph = jsonData[key];
-                                drawBarChart(context, dataForGraph, key, "#ef7634",
+                                drawBarChart(context, dataForGraph, key, "#00B3E6",
                                     "Exam Marks");
                             }
                         }

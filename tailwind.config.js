@@ -6,7 +6,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        "dark-orange": "#EF7634",
+        //dark orange is used as variable for dhading school color palette
+        "dark-orange": "#00B3E6",
         "light-orange": "#FCA311",
         "dark-gray": "#f5f5f5",
         "custom-black": "#36312F",
