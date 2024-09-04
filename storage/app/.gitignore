@@ -1,0 +1,7 @@
+*
+!*/
+!public/
+!.gitignore
+!results/.gitkeep
+!public/**/.gitkeep
+!images/**

@@ -1,0 +1,20 @@
+name: DEPLOY
+on:
+  push:
+    branches:
+    - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@5.2
+      with:
+        switches: -avzr --exclude=".env" --exclude="vendor/" --exclude=".vscode" --exclude=".git/" --exclude="public/storage/" --exclude="
+        remote_path: /var/www/html/development/result_sifal/
+        remote_host: 110.44.116.54
+        remote_user: ubuntu
+        #remote_password: ubuntu
+        remote_key: ${{ secrets.DEPLOY_KEY }}
