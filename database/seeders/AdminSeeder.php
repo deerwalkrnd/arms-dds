@@ -15,12 +15,12 @@ class AdminSeeder extends Seeder
     {
         ;
 
-        $admin = User::create([
-            "name" => "System Admin",
-            "email" => "dmt@dhading.deerwalk.edu.np",
-            "password" => bcrypt("password")
-            // New Passowrd: WithLoveFromDMT2024
-        ]);
+        // $admin = User::create([
+        //     "name" => "System Admin",
+        //     "email" => "dmt@dhading.deerwalk.edu.np",
+        //     "password" => bcrypt("password")
+        //     // New Passowrd: WithLoveFromDMT2024
+        // ]);
 
         $schoolAdmin = User::create([
             "name" => "ARMS Admin",
@@ -39,7 +39,7 @@ class AdminSeeder extends Seeder
 
 
         // Set the user_id and attach the role to the user
-        $admin->roles()->attach($adminRole->id, ['user_id' => $admin->id]);
+        // $admin->roles()->attach($adminRole->id, ['user_id' => $admin->id]);
         $schoolAdmin->roles()->attach($adminRole->id, ['user_id' => $schoolAdmin->id]);
         $schoolAdmin->roles()->attach($hosRole->id, ['user_id' => $schoolAdmin->id]);
         $schoolAdmin->roles()->attach($hodRole->id, ['user_id' => $schoolAdmin->id]);

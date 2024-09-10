@@ -7,7 +7,7 @@
 }
 
 .login_background {
-    background: rgba(0, 0, 0, .65) url("../assets/images/background.jpg");
+    background: rgba(0, 0, 0, .65) url("../assets/images/background_dds.jpg");
     background-size: cover;
     background-blend-mode: darken;
     height: 100vh;

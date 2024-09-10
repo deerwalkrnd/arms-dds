@@ -16,7 +16,7 @@
 <body>
     <main class="login_background">
         <div class="backdrop_filter flex lg:flex-row flex-col  h-full backdrop-blur-sm">
-            <div class="w-1/2"><img class="h-16 ml-4 mt-4" src="assets/images/sifalschoollogo.png" alt="">
+            <div class="w-1/2"><img class="h-12 ml-4 mt-4" src="assets/images/dds_logo.png" alt="">
             </div>
             <div class="h-max w-[26rem] border flex rounded-md bg-white m-auto ">
                 <div class="flex rounded-mdbg-white m-auto w-full">

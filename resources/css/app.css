@@ -23,7 +23,7 @@ input[type=number] {
 }
 
 .login_background {
-    background: rgba(0, 0, 0, .65) url("../../public/assets/images/background.jpg");
+    background: rgba(0, 0, 0, .65) url("../../public/assets/images/background_dds.jpg");
     background-size: cover;
     background-blend-mode: darken;
     background-position: bottom;
