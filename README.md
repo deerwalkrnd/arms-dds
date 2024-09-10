@@ -19,13 +19,13 @@ also provides marksheet generation of each student.
 1. Clone the project
 
 ```bash
-  git clone https://github.com/dwitrnd/result_sifal.git
+  git clone https://github.com/dwitrnd/arms-dds.git
 ```
 
 2. Go to the project directory
 
 ```bash
-cd result_sifal
+cd arms-dds
 ```
 3. Update dependencies *(Optional)*
 ```bash
