@@ -26,10 +26,6 @@ class GradeRequest extends FormRequest
         return [
             "name" => [
                 "required",
-                "integer",
-                Rule::unique("grades", "name")->ignore($id),
-                "min:0",
-                "max:12"
             ],
 
             "end_date" => ["date"],
