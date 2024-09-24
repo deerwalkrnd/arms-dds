@@ -15,7 +15,7 @@
 
                 <div class="flex flex-col gap-2">
                     <label for="name" class="text-lg font-semibold text-custom-black">Enter the Grade:</label>
-                    <input type="number" name="name" id="name"
+                    <input type="text" name="name" id="name"
                         class="border-2 border-dark-gray rounded-md p-2 focus:outline-none focus:border-dark-orange"
                         value="{{ old('name') }}" required />
                 </div>
