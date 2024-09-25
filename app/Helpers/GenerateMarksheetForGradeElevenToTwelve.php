@@ -204,7 +204,13 @@ class GenerateMarksheetForGradeElevenToTwelve
             $pdf->setXY($x_positions[$index], $y_positions[$i]);
             $pdf->Write(0.1, $checkMark);
 
-            if($subject['type']=='Club_HS'){
+            if($subject['type']=='Club_1_HS'){
+                $pdf->setFont('Times', '', '12');
+                $pdf->setXY(11.8,228.5);
+                $pdf->Write(0.1, $subject['name']);
+                $pdf->SetFont('ZapfDingbats', '', 10);
+            }
+            if($subject['type']=='Club_2_HS'){
                 $pdf->setFont('Times', '', '12');
                 $pdf->setXY(11.8,228.5);
                 $pdf->Write(0.1, $subject['name']);

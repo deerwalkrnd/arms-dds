@@ -124,7 +124,7 @@ class EcaCas extends Model
             return "No CAS weightage found for the school";
         }
 
-        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" || $subject->type == "Club_HS" || $subject->type == "Reading_Book") {
+        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" ||  $subject->type == "Club_1_HS" || $subject->type == "Club_2_HS" || $subject->type == "Reading_Book") {
             $gradeBoundaries = [
                 40 => "Exceptional",
                 30 => "More Than Satisfactory",
@@ -155,7 +155,7 @@ class EcaCas extends Model
 
         $conversion = $cas / 100;
 
-        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" || $subject->type == "Club_HS" || $subject->type == "Reading_Book") {
+        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" ||  $subject->type == "Club_1_HS" || $subject->type == "Club_2_HS" || $subject->type == "Reading_Book") {
             $gradeBoundaries = [
                 40 => "Exceptional",
                 30 => "More Than Satisfactory",

@@ -128,7 +128,7 @@ class ClubCas extends Model
         }
 
 
-        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" || $subject->type == "Club_HS" || $subject->type == "Reading_Book") {
+        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" ||  $subject->type == "Club_1_HS" || $subject->type == "Club_2_HS" || $subject->type == "Reading_Book") {
             $gradeBoundaries = [
                 40 => "Exceptional",
                 30 => "More Than Satisfactory",
@@ -159,7 +159,7 @@ class ClubCas extends Model
 
       
        
-        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" || $subject->type == "Club_HS" || $subject->type == "Reading_Book") {
+        if ($subject->type == "ECA" || $subject->type == "Club_ES" || $subject->type == "Club_1_MS" || $subject->type == "Club_2_MS" ||  $subject->type == "Club_1_HS" || $subject->type == "Club_2_HS" || $subject->type == "Reading_Book") {
             $gradeBoundaries = [
                 40 => "Exceptional",
                 30 => "More Than Satisfactory",

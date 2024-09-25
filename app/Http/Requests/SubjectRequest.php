@@ -29,7 +29,7 @@ class SubjectRequest extends FormRequest
             "name" => ["required"],
             "subject_code" => ["required", Rule::unique("subjects", "subject_code")->ignore($id)],
             "department_id" => ["required", "exists:departments,id"],
-            "type" => ["required", "in:MAIN,ECA,CREDIT,Club_ES,Club_1_MS,Club_2_MS,Club_HS,Reading_Book"],
+            "type" => ["required", "in:MAIN,ECA,CREDIT,Club_ES,Club_1_MS,Club_2_MS,Club_1_HS,Club_2_HS,Reading_Book"],
             "grade_id" => ["required", "exists:grades,id"],
             "credit_hr" => ["required", "numeric", "min:0"]
         ];
