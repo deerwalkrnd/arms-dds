@@ -15,17 +15,17 @@
         @endif
     </p>
     <p>
-        Please login using this link: <a href="https://arms.deerwalk.edu.np">
-            arms.deerwalk.edu.np
+        Please login using this link: <a href="https://arms-dds.deerwalk.edu.np">
+            arms-dds.deerwalk.edu.np
         </a>
     </p>
     <p>Regards,</p>
     <br>
     <div id="signature">
         --<br>
-        <span style="color:#E95D0F;"><b>ARMS</b></span><br>
-        Deerwalk Sifal School<br>
-        Sifal, Kathmandu<br>
+        <span style="color:#00B3E6;"><b>ARMS</b></span><br>
+        Deerwalk Dhading School<br>
+        Dhunibesi - 9, Dhading<br>
         Nepal<br>
         <a href="deerwalk.edu.np">deerwalk.edu.np</a>
         <br>
