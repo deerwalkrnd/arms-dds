@@ -39,7 +39,7 @@ class SubjectController extends Controller
             $teacherId = auth()->id();
 
             $departments = Department::all()->sortBy("name");
-            $types = ["MAIN", "CREDIT", "ECA", "Club_ES","Club_1_MS","Club_2_MS","Club_HS","Reading_Book"];
+            $types = ["MAIN", "CREDIT", "ECA", "Club_ES","Club_1_MS","Club_2_MS",'Club_1_HS','Club_2_HS',"Reading_Book"];
             $grades = Grade::whereHas("school", function ($query) use ($teacherId) {
                 return $query->where("head_of_school_id", $teacherId);
             })->get()->sortBy("name");

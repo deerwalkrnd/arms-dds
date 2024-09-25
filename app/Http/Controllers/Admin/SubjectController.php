@@ -35,7 +35,7 @@ class SubjectController extends Controller
 
             $grades = Grade::all()->sortBy("name");
 
-            $types = ["MAIN", "CREDIT", "ECA", "Club_ES","Club_1_MS","Club_2_MS","Club_HS","Reading_Book"];
+            $types = ["MAIN", "CREDIT", "ECA", "Club_ES","Club_1_MS","Club_2_MS",'Club_1_HS','Club_2_HS',"Reading_Book"];
 
             return view("admin.subjects.create", ["departments" => $departments, "types" => $types, "grades" => $grades]);
 
@@ -67,7 +67,7 @@ class SubjectController extends Controller
         try {
             $subject = Subject::findOrFail($id);
 
-            $types = ["MAIN", "CREDIT", "ECA","Club_ES","Club_1_MS","Club_2_MS","Club_HS","Reading_Book"];
+            $types = ["MAIN", "CREDIT", "ECA","Club_ES","Club_1_MS","Club_2_MS",'Club_1_HS','Club_2_HS',"Reading_Book"];
 
             $grades = Grade::all()->sortBy("name");
             $departments = Department::all()->sortBy("name");

@@ -43,7 +43,7 @@ class StudentController extends Controller
     {
         try {
             $sections = Section::all()->sortBy('grade.name');
-            $subjectTypes = ['Club_ES','Club_1_MS','Club_2_MS','Club_HS'];
+            $subjectTypes = ['Club_ES','Club_1_MS','Club_2_MS','Club_1_HS','Club_2_HS'];
             $subjects = Subject::whereIn('type',$subjectTypes)->get();
             return view('admin.students.create', compact("sections","subjects"));
 
@@ -114,7 +114,7 @@ class StudentController extends Controller
         try {
             $student = Student::findOrFail($id);
             $sections = Section::all()->sortBy("grade.name");
-            $subjectTypes = ['Club_ES','Club_1_MS','Club_2_MS','Club_HS'];
+            $subjectTypes = ['Club_ES','Club_1_MS','Club_2_MS','Club_1_HS','Club_2_HS'];
             $subjects = Subject::whereIn('type',$subjectTypes)->get();
 
             return view('admin.students.edit')->with(compact('student', 'sections',"subjects"));
