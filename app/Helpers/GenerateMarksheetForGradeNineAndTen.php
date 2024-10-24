@@ -28,29 +28,29 @@ class GenerateMarksheetForGradeNineAndTen
 
         $pdf->setFont('Times', 'B', '12');
         if (strtoupper($term->name) == "FIRST") {
-            $pdf->SetXY(64, 18.68);
+            $pdf->SetXY(64, 19.38);
             $pdf->Write(0.1, strtoupper($term->name));
         } elseif (strtoupper($term->name) == "SECOND") {
-            $pdf->SetXY(59, 18.68);
+            $pdf->SetXY(59, 19.38);
             $pdf->Write(0.1, strtoupper($term->name));
         } elseif (strtoupper($term->name) == "THIRD") {
-            $pdf->SetXY(63, 18.68);
+            $pdf->SetXY(63, 19.38);
             $pdf->Write(0.1, strtoupper($term->name));
         } else {
-            $pdf->SetXY(60, 18.68);
+            $pdf->SetXY(60, 19.38);
             $pdf->Write(0.1, strtoupper($term->name));
         }
         $year = 2081;
-        $pdf->SetXY(137, 18.7);
+        $pdf->SetXY(137, 19.38);
         $pdf->Write(0.1, strtoupper($year));
 
         $pdf->setFont('Times', '', '12');
         // $pdf->SetXY(60, 28.2);
         // $pdf->Write(0.1, strtoupper($student->emis_no));
-        $pdf->SetXY(82, 28.4);
+        $pdf->SetXY(82, 28.89);
         $pdf->Write(0.1, strtoupper($student->roll_number));
         $studentName = $student->name;
-        $pdf->SetXY(130, 28.4);
+        $pdf->SetXY(130, 28.89);
         $pdf->Write(0.1, strtoupper($studentName));
 
         $initialYOffset = 0;
@@ -76,11 +76,11 @@ class GenerateMarksheetForGradeNineAndTen
                 $hasFailed = true;
             }
 
-            $pdf->SetXY(82, 53.35 + $y_avgoffset);
+            $pdf->SetXY(82, 53.85 + $y_avgoffset);
             $pdf->Write(0.1, $subject['credit_hour']);
-            $pdf->SetXY(110, 50 + $y_offset);
+            $pdf->SetXY(110, 50.5 + $y_offset);
             $pdf->Write(0.1, $subject['exam_grade']);
-            $pdf->SetXY(141, 50 + $y_offset);
+            $pdf->SetXY(141, 50.5 + $y_offset);
             if ($subject['exam_mark'] == "NG") {
                 $subject['exam_mark'] = "0.0";
             }
@@ -162,17 +162,17 @@ class GenerateMarksheetForGradeNineAndTen
 
             $pdf->SetXY(79, 177.65 + $y_avgoffset);
             $pdf->Write(0.1, $subject['credit_hour']);
-            $pdf->SetXY(110, 174.3 + $y_offset);
+            $pdf->SetXY(110, 174.9 + $y_offset);
             $pdf->Write(0.1, $subject['exam_grade']);
-            $pdf->SetXY(142, 174.3 + $y_offset);
+            $pdf->SetXY(142, 174.9 + $y_offset);
             if ($subject['exam_mark'] == "NG") {
                 $subject['exam_mark'] = "0.0";
             }
             $pdf->Write(0.1, $subject['exam_mark']);
             // Add practical row
-            $pdf->SetXY(110, 181 + $y_offset);
+            $pdf->SetXY(110, 181.1 + $y_offset);
             $pdf->Write(0.1, $subject['cas_grade']);
-            $pdf->SetXY(142, 181 + $y_offset);
+            $pdf->SetXY(142, 181.1 + $y_offset);
             if ($subject['cas_mark'] == "NG") {
                 $subject['cas_mark'] = "0.0";
             }
@@ -186,28 +186,28 @@ class GenerateMarksheetForGradeNineAndTen
             $initialYOffset += 13.2;
             $initalAvgYoffset += 13.2;
         }
-        $pdf->SetFont('ZapfDingbats', '', 10);
-        $checkMark = "4";
+        // $pdf->SetFont('ZapfDingbats', '', 10);
+        // $checkMark = "4";
 
-        $x_positions = [55, 90, 125, 155, 188];
-        $y_positions = [209.5,215, 221.5];
+        // $x_positions = [55, 90, 125, 155, 188];
+        // $y_positions = [209.5,215, 221.5];
 
-        $i = 0;
-        foreach ($marks["ECA"] as $subject) {
-            $cas_mark = $subject["cas_mark"];
-            $index = array_search($cas_mark, ['Exceptional', 'More Than Satisfactory', 'Satisfactory', 'Need Improvement', 'Not Acceptable']);
+        // $i = 0;
+        // foreach ($marks["ECA"] as $subject) {
+        //     $cas_mark = $subject["cas_mark"];
+        //     $index = array_search($cas_mark, ['Exceptional', 'More Than Satisfactory', 'Satisfactory', 'Need Improvement', 'Not Acceptable']);
 
-            $pdf->setXY($x_positions[$index], $y_positions[$i]);
-            $pdf->Write(0.1, $checkMark);
+        //     $pdf->setXY($x_positions[$index], $y_positions[$i]);
+        //     $pdf->Write(0.1, $checkMark);
 
-            if($subject['type']=='Club_HS'){
-                $pdf->setFont('Times', '', '12');
-                $pdf->setXY(13.8,220.6);
-                $pdf->Write(0.1, $subject['name']);
-                $pdf->SetFont('ZapfDingbats', '', 10);
-            }
-            $i++;
-        }
+        //     if($subject['type']=='Club_HS'){
+        //         $pdf->setFont('Times', '', '12');
+        //         $pdf->setXY(13.8,220.6);
+        //         $pdf->Write(0.1, $subject['name']);
+        //         $pdf->SetFont('ZapfDingbats', '', 10);
+        //     }
+        //     $i++;
+        // }
 
         $pdf->Image($classTeacherSignature, 18, 243, 20, 20);
         $pdf->Image($principalSignature, 185, 243, 20, 20);

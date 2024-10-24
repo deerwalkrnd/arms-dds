@@ -90,24 +90,30 @@ class GenerateMarksheets extends Command
                         
                         $gradePointBySubjectForCas = Cas::gradePoint($subject, $cumulativeCasMarkBySubject);
                         $gradeConversionForCas = Cas::gradeConversion($subject, $cumulativeCasMarkBySubject);
-                    } elseif ($subject->type == "ECA") {
-                        $cumulativeCasMarkBySubject = EcaCas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
-                        $gradePointBySubjectForCas = EcaCas::gradePoint($subject, $cumulativeCasMarkBySubject);
-                        $gradeConversionForCas = EcaCas::gradeConversion($subject, $cumulativeCasMarkBySubject);
-                    } elseif ($subject->type == "Reading_Book") {
-                        $cumulativeCasMarkBySubject = ReadingCas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
-                        $gradePointBySubjectForCas = ReadingCas::gradePoint($subject, $cumulativeCasMarkBySubject);
-                        $gradeConversionForCas = ReadingCas::gradeConversion($subject, $cumulativeCasMarkBySubject);
-                    } else {
-                        $clubs = $student->subject()->get();
-                        foreach($clubs as $club){
-                            if ($club->id == $subject->id) {
-                                $cumulativeCasMarkBySubject = ClubCas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
-                                $gradePointBySubjectForCas = ClubCas::gradePoint($subject, $cumulativeCasMarkBySubject);
-                                $gradeConversionForCas = ClubCas::gradeConversion($subject, $cumulativeCasMarkBySubject);
-                            }
-                        }
-                    }
+                    } 
+                    // elseif ($subject->type == "ECA") {
+                    //     $cumulativeCasMarkBySubject = EcaCas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
+                    //     $gradePointBySubjectForCas = EcaCas::gradePoint($subject, $cumulativeCasMarkBySubject);
+                    //     $gradeConversionForCas = EcaCas::gradeConversion($subject, $cumulativeCasMarkBySubject);
+                    // } elseif ($subject->type == "Reading_Book") {
+                    //     $cumulativeCasMarkBySubject = ReadingCas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
+                    //     $gradePointBySubjectForCas = ReadingCas::gradePoint($subject, $cumulativeCasMarkBySubject);
+                    //     $gradeConversionForCas = ReadingCas::gradeConversion($subject, $cumulativeCasMarkBySubject);
+                    // } else {
+                    //     $clubs = $student->subject()->get();
+                    //     foreach($clubs as $club){
+                    //         if ($club->id == $subject->id) {
+                    //             $cumulativeCasMarkBySubject = ClubCas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
+                    //             $gradePointBySubjectForCas = ClubCas::gradePoint($subject, $cumulativeCasMarkBySubject);
+                    //             $gradeConversionForCas = ClubCas::gradeConversion($subject, $cumulativeCasMarkBySubject);
+                    //         }
+                    //     }
+                    // }
+
+
+
+
+
                     // ----------------------------------------------------------------
 
 
@@ -165,18 +171,19 @@ class GenerateMarksheets extends Command
                         $casGradePointCollectionByStudent->push(['cas_mark' => $gradePointBySubjectForCas, 'type' => $subject->type, 'name' => $subject->name, 'credit_hour' => $subject->credit_hr]);
 
                         $casGradeCollectionByStudent->push(['cas_grade' => $gradeConversionForCas, 'type' => $subject->type, 'name' => $subject->name]);
-                    } elseif ($subject->type == "ECA" || $subject->type == "Reading_Book") {
-                        $casGradePointCollectionByStudent->push(['cas_mark' => $gradePointBySubjectForCas, 'type' => "ECA", 'name' => $subject->name, 'credit_hour' => $subject->credit_hr]);
-                        $casGradeCollectionByStudent->push(['cas_grade' => $gradeConversionForCas, 'type' => "ECA", 'name' => $subject->name]);
-                    } else {
-                        $clubs = $student->subject()->get();
-                        foreach($clubs as $club){
-                            if ($club->id == $subject->id) {
-                                $casGradePointCollectionByStudent->push(['cas_mark' => $gradePointBySubjectForCas, 'type' => "ECA", 'name' => $subject->name, 'credit_hour' => $subject->credit_hr]);
-                                $casGradeCollectionByStudent->push(['cas_grade' => $gradeConversionForCas, 'type' => "ECA", 'name' => $subject->name]);
-                            }
-                        }
-                    }
+                    } 
+                    // elseif ($subject->type == "ECA" || $subject->type == "Reading_Book") {
+                    //     $casGradePointCollectionByStudent->push(['cas_mark' => $gradePointBySubjectForCas, 'type' => "ECA", 'name' => $subject->name, 'credit_hour' => $subject->credit_hr]);
+                    //     $casGradeCollectionByStudent->push(['cas_grade' => $gradeConversionForCas, 'type' => "ECA", 'name' => $subject->name]);
+                    // } else {
+                    //     $clubs = $student->subject()->get();
+                    //     foreach($clubs as $club){
+                    //         if ($club->id == $subject->id) {
+                    //             $casGradePointCollectionByStudent->push(['cas_mark' => $gradePointBySubjectForCas, 'type' => "ECA", 'name' => $subject->name, 'credit_hour' => $subject->credit_hr]);
+                    //             $casGradeCollectionByStudent->push(['cas_grade' => $gradeConversionForCas, 'type' => "ECA", 'name' => $subject->name]);
+                    //         }
+                    //     }
+                    // }
 
 
                     $examGradePointCollectionByStudent->push(['exam_mark' => $gradePointForExamMarks, 'type' => $subject->type, 'name' => $subject->name]);
@@ -231,11 +238,11 @@ class GenerateMarksheets extends Command
                     //now send these marks to pdf generator
                 } elseif ($currentTerm->grade->name >= 9 && $currentTerm->grade->name <= 10) {
 
-                    $sortOrderForMainSubjects = ['Nepali', 'English', 'C. Mathematics', 'Science And Technology', 'Samajik Adhyayan', 'A Mathematics', 'Computer Science'];
+                    $sortOrderForMainSubjects = ['Nepali', 'English', 'C. Mathematics', 'Science & Technology', 'Samajik Adhyayan', 'Additional Mathematics', 'Computer Science'];
 
                     $sortOrderForCreditSubjects = ['Coding'];
-                    $club = $student->subject()->first();
-                    $sortOrderForEcaSubjects = ['English Reading Book', 'Nepali Reading Book', $club->name];
+                    // $club = $student->subject()->first();
+                    $sortOrderForEcaSubjects = ['English Reading Book', 'Nepali Reading Book'];
 
                     $marks = MarkSortAndMerge::sortAndMerge($casGradePointCollectionByStudent, $casGradeCollectionByStudent, $examGradePointCollectionByStudent, $examGradeCollectionByStudent, $sortOrderForMainSubjects, $sortOrderForCreditSubjects, $sortOrderForEcaSubjects, $totalGPACollectionConversion, $totalMarksCollectionByStudent);
                     GenerateMarksheetForGradeNineAndTen::generate($student, $currentTerm, $marks);
