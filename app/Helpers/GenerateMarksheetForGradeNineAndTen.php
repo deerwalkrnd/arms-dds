@@ -21,8 +21,8 @@ class GenerateMarksheetForGradeNineAndTen
         $tplId = $pdf->importPage(1);
         $pdf->useTemplate($tplId, 0, 0, null, null, true);
 
-        // $classTeacherSignature = public_path("storage/signatures/" . $student->section->classTeacher->signature);
-        $classTeacherSignature = storage_path("app/images/principal_signature.png");
+        $classTeacherSignature = public_path("storage/signatures/" . $student->section->classTeacher->signature);
+        // $classTeacherSignature = storage_path("app/images/principal_signature.png");
         // $principalSignature = public_path("storage/signatures/" . $term->grade->school->headOfSchool->signature);
         $principalSignature = storage_path("app/images/principal_signature.png");
 

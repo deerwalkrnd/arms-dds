@@ -258,8 +258,8 @@ class GenerateMarksheets extends Command
                 }
             }
             // set the current term's is_result_generated to 1
-            // $currentTerm->is_result_generated = 1;
-            // $currentTerm->save();
+            $currentTerm->is_result_generated = 1;
+            $currentTerm->save();
 
             Log::info("Result Generated for Grade " . $currentTerm->grade->name . " for " . $currentTerm->name . " term");
 
