@@ -7,9 +7,8 @@ use App\Models\Term;
 use setasign\Fpdi\Fpdi;
 use ZipArchive;
 
-class GenerateMarksheetForGradeFour
+class GenerateMarksheetForGradePreSchool
 {
-
     public static function generate(Student $student, Term $term, $marks)
     {
         $pdf = new Fpdi();
@@ -21,18 +20,18 @@ class GenerateMarksheetForGradeFour
         $pdf->setSourceFile($path);
         $tplId = $pdf->importPage(1);
         $pdf->useTemplate($tplId, 0, 0, null, null, true);
+
+        // $principalSignature = public_path("storage/signatures/" . $term->grade->school->headOfSchool->signature);
         $classTeacherSignature = public_path("storage/signatures/" . $student->section->classTeacher->signature);
         // $classTeacherSignature = storage_path("app/images/principal_signature.png");
-        // $principalSignature = public_path("storage/signatures/" . $term->grade->school->headOfSchool->signature);
         $principalSignature = storage_path("app/images/principal_signature.png");
-
 
         $pdf->setFont('Times', 'B', '12');
         if (strtoupper($term->name) == "FIRST") {
             $pdf->SetXY(64, 18.68);
             $pdf->Write(0.1, strtoupper($term->name));
         } elseif (strtoupper($term->name) == "SECOND") {
-            $pdf->SetXY(59, 18.68);
+            $pdf->SetXY(59, 18.59);
             $pdf->Write(0.1, strtoupper($term->name));
         } elseif (strtoupper($term->name) == "THIRD") {
             $pdf->SetXY(63, 18.68);
@@ -42,16 +41,16 @@ class GenerateMarksheetForGradeFour
             $pdf->Write(0.1, strtoupper($term->name));
         }
         $year = 2081;
-        $pdf->SetXY(137, 18.7);
+        $pdf->SetXY(137, 18.59);
         $pdf->Write(0.1, strtoupper($year));
 
         $pdf->setFont('Times', '', '12');
         // $pdf->SetXY(60, 28.2);
         // $pdf->Write(0.1, strtoupper($student->emis_no));
-        $pdf->SetXY(77, 28.4);
+        $pdf->SetXY(80, 27.68);
         $pdf->Write(0.1, strtoupper($student->roll_number));
         $studentName = $student->name;
-        $pdf->SetXY(130, 28.4);
+        $pdf->SetXY(128, 27.68);
         $pdf->Write(0.1, strtoupper($studentName));
 
         $initialYOffset = 0;
@@ -77,26 +76,26 @@ class GenerateMarksheetForGradeFour
                 $hasFailed = true;
             }
 
-            $pdf->SetXY(79, 46 + $y_avgoffset);
+            $pdf->SetXY(79, 47.07 + $y_avgoffset);
             $pdf->Write(0.1, $subject['credit_hour']);
-            $pdf->SetXY(110, 42.7 + $y_offset);
+            $pdf->SetXY(110, 43.94 + $y_offset);
             $pdf->Write(0.1, $subject['exam_grade']);
-            $pdf->SetXY(141, 42.7 + $y_offset);
+            $pdf->SetXY(141, 43.94 + $y_offset);
             if ($subject['exam_mark'] == "NG") {
                 $subject['exam_mark'] = "0.0";
             }
             $pdf->Write(0.1, $subject['exam_mark']);
             // Add practical row
-            $pdf->SetXY(110, 48.9 + $y_offset);
+            $pdf->SetXY(110, 50.04 + $y_offset);
             $pdf->Write(0.1, $subject['cas_grade']);
-            $pdf->SetXY(141, 48.9 + $y_offset);
+            $pdf->SetXY(141, 50.04 + $y_offset);
             if ($subject['cas_mark'] == "NG") {
                 $subject['cas_mark'] = "0.0";
             }
             $pdf->Write(0.1, $subject['cas_mark']);
 
             // Add average row
-            $pdf->SetXY(178, 46 + $y_avgoffset);
+            $pdf->SetXY(178, 47.07 + $y_avgoffset);
             $pdf->Write(0.1, $subject['average_point']);
 
 
@@ -109,14 +108,14 @@ class GenerateMarksheetForGradeFour
             $gradePointSum += floatval($subject['average_marks']);
 
 
-            $initialYOffset += 12.8;
-            $initalAvgYoffset += 12.8;
+            $initialYOffset += 12.2;
+            $initalAvgYoffset += 12.2;
         }
         // $gradePointAverage = $mainSubjectCount > 0 ? $gradePointSum / $mainSubjectCount : 0;
 
         // New logic for WGPA average
         $gradePointAverage = $mainSubjectCount > 0 ? number_format($gradePointSum / $totalCreditHour, 2) : "0.00";
-
+        
         $gradeBoundaries = [
             "3.6" => "A+",
             "3.2" => "A",
@@ -148,10 +147,10 @@ class GenerateMarksheetForGradeFour
             $gradeAverage = "";
         }
 
-        $pdf->SetXY(62, 122.5);
+        $pdf->SetXY(62, 106.74);
         $pdf->Write(0.1, $gradePointAverage);
 
-        $pdf->SetXY(151.5, 122.5);
+        $pdf->SetXY(151.5, 106.74);
         $pdf->Write(0.1, $gradeAverage);
 
         $initialYOffset = 0;
@@ -161,61 +160,53 @@ class GenerateMarksheetForGradeFour
             $y_offset = $initialYOffset;
             $y_avgoffset = $initalAvgYoffset;
 
-            $pdf->SetXY(79, 148.5 + $y_avgoffset);
+            $pdf->SetXY(79, 133.43 + $y_avgoffset);
             $pdf->Write(0.1, $subject['credit_hour']);
-            $pdf->SetXY(110, 146 + $y_offset);
+            $pdf->SetXY(110, 130.3 + $y_offset);
             $pdf->Write(0.1, $subject['exam_grade']);
-            $pdf->SetXY(142, 146 + $y_offset);
+            $pdf->SetXY(142, 130.3 + $y_offset);
             if ($subject['exam_mark'] == "NG") {
                 $subject['exam_mark'] = "0.0";
             }
             $pdf->Write(0.1, $subject['exam_mark']);
             // Add practical row
-            $pdf->SetXY(110, 152 + $y_offset);
+            $pdf->SetXY(110, 136.48 + $y_offset);
             $pdf->Write(0.1, $subject['cas_grade']);
-            $pdf->SetXY(142, 152 + $y_offset);
+            $pdf->SetXY(142, 136.48 + $y_offset);
             if ($subject['cas_mark'] == "NG") {
                 $subject['cas_mark'] = "0.0";
             }
             $pdf->Write(0.1, $subject['cas_mark']);
 
             // Add average row
-            $pdf->SetXY(178, 148.5+ $y_avgoffset);
+            $pdf->SetXY(178, 133.43 + $y_avgoffset);
             $pdf->Write(0.1, $subject['average_point']);
 
 
-            $initialYOffset += 12.7;
-            $initalAvgYoffset += 12.8;
+            $initialYOffset += 12.2;
+            $initalAvgYoffset += 12.2;
         }
        
         $pdf->SetFont('ZapfDingbats', '', 10);
         $checkMark = "4";
 
-        $x_positions = [55, 90, 125, 155, 188];
-        $y_positions = [191.5,198.4,205, 211.7, 218, 223.8, 230.8, 236.5,243];
+        $x_positions = [53, 85, 122, 155, 187];
+        $y_positions = [172,178,184, 190, 196, 202, 208, 214, 220, 226,233,239,245];
 
         $i = 0;
-        
-        foreach ($marks["ECA"] as $subject) {
-            $cas_mark = $subject["cas_mark"];
-            $index = array_search($cas_mark, ['Exceptional', 'More Than Satisfactory', 'Satisfactory', 'Need Improvement', 'Not Acceptable']);
+        // foreach ($marks["ECA"] as $subject) {
+        //     $cas_mark = $subject["cas_mark"];
+        //     $index = array_search($cas_mark, ['Exceptional', 'More Than Satisfactory', 'Satisfactory', 'Need Improvement', 'Not Acceptable']);
 
-            $pdf->setXY($x_positions[$index], $y_positions[$i]);
-            $pdf->Write(0.1, $checkMark);
+        //     $pdf->setXY($x_positions[$index], $y_positions[$i]);
+        //     $pdf->Write(0.1, $checkMark);
 
-            if($subject['type']=='Club_ES'){
-                $pdf->setFont('Times', '', '12');
-                $pdf->setXY(13.8,242.55);
-                $pdf->Write(0.1, $subject['name']);
-                $pdf->SetFont('ZapfDingbats', '', 10);
-            }
-            $i++;
-        }
+        //     $i++;
+        // }
+        $pdf->Image($classTeacherSignature, 18, 244, 20, 20);
+        $pdf->Image($principalSignature, 185, 244, 20, 20);
 
-        $pdf->Image($classTeacherSignature, 18, 245, 20, 20);
-        $pdf->Image($principalSignature, 185, 245, 20, 20);
-
-       $outputFolder = storage_path("app/results/Grade " . $term->grade->name ." ".$term->name. "/");
+        $outputFolder = storage_path("app/results/Grade " . $term->grade->name ." ".$term->name. "/");
 
         if (!file_exists($outputFolder)) {
             mkdir($outputFolder, 0755, true);
@@ -242,5 +233,4 @@ class GenerateMarksheetForGradeFour
 
 
     }
-
 }

@@ -7,7 +7,7 @@ use App\Models\Term;
 use setasign\Fpdi\Fpdi;
 use ZipArchive;
 
-class GenerateMarksheetForGradeFiveToEight
+class GenerateMarksheetForGradeFourToEight
 {
     public static function generate(Student $student, Term $term, $marks)
     {
@@ -32,7 +32,7 @@ class GenerateMarksheetForGradeFiveToEight
             $pdf->SetXY(64, 18.68);
             $pdf->Write(0.1, strtoupper($term->name));
         } elseif (strtoupper($term->name) == "SECOND") {
-            $pdf->SetXY(59, 18.68);
+            $pdf->SetXY(59, 18.42);
             $pdf->Write(0.1, strtoupper($term->name));
         } elseif (strtoupper($term->name) == "THIRD") {
             $pdf->SetXY(63, 18.68);
@@ -42,7 +42,7 @@ class GenerateMarksheetForGradeFiveToEight
             $pdf->Write(0.1, strtoupper($term->name));
         }
         $year = 2081;
-        $pdf->SetXY(137, 18.7);
+        $pdf->SetXY(137, 18.42);
         $pdf->Write(0.1, strtoupper($year));
 
         $pdf->setFont('Times', '', '12');
@@ -148,10 +148,10 @@ class GenerateMarksheetForGradeFiveToEight
             $gradeAverage = "";
         }
 
-        $pdf->SetXY(62, 138.5);
+        $pdf->SetXY(62, 138.34);
         $pdf->Write(0.1, $gradePointAverage);
 
-        $pdf->SetXY(151.5, 138.5);
+        $pdf->SetXY(151.5, 138.34);
         $pdf->Write(0.1, $gradeAverage);
 
         $initialYOffset = 0;
@@ -195,25 +195,25 @@ class GenerateMarksheetForGradeFiveToEight
         $y_positions = [216, 222.5, 229, 236];
 
         $i = 0;
-        foreach ($marks["ECA"] as $subject) {
-            $cas_mark = $subject["cas_mark"];
-            $index = array_search($cas_mark, ['Exceptional', 'More Than Satisfactory', 'Satisfactory', 'Need Improvement', 'Not Acceptable']);
-            $pdf->setXY($x_positions[$index], $y_positions[$i]);
-            $pdf->Write(0.1, $checkMark);
-            if($subject['type']=='Club_1_MS'){
-                $pdf->setFont('Times', '', '12');
-                $pdf->setXY(13.8,228.5);
-                $pdf->Write(0.1, $subject['name']);
-                $pdf->SetFont('ZapfDingbats', '', 10);
-            }
-            if($subject['type']=='Club_2_MS'){
-                $pdf->setFont('Times', '', '12');
-                $pdf->setXY(13.8,235);
-                $pdf->Write(0.1, $subject['name']);
-                $pdf->SetFont('ZapfDingbats', '', 10);
-            }
-            $i++;
-        }
+        // foreach ($marks["ECA"] as $subject) {
+        //     $cas_mark = $subject["cas_mark"];
+        //     $index = array_search($cas_mark, ['Exceptional', 'More Than Satisfactory', 'Satisfactory', 'Need Improvement', 'Not Acceptable']);
+        //     $pdf->setXY($x_positions[$index], $y_positions[$i]);
+        //     $pdf->Write(0.1, $checkMark);
+        //     if($subject['type']=='Club_1_MS'){
+        //         $pdf->setFont('Times', '', '12');
+        //         $pdf->setXY(13.8,228.5);
+        //         $pdf->Write(0.1, $subject['name']);
+        //         $pdf->SetFont('ZapfDingbats', '', 10);
+        //     }
+        //     if($subject['type']=='Club_2_MS'){
+        //         $pdf->setFont('Times', '', '12');
+        //         $pdf->setXY(13.8,235);
+        //         $pdf->Write(0.1, $subject['name']);
+        //         $pdf->SetFont('ZapfDingbats', '', 10);
+        //     }
+        //     $i++;
+        // }
 
         $pdf->Image($classTeacherSignature, 18, 243, 20, 20);
         $pdf->Image($principalSignature, 185, 243, 20, 20);
