@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 
 use App\Helpers\GenerateMarksheetForGradeElevenToTwelve;
-use App\Helpers\GenerateMarksheetForGradeFourToEight;
+use App\Helpers\GenerateMarksheetForGradeFiveToEight;
 use App\Helpers\GenerateMarksheetForGradeFour;
 use App\Helpers\GenerateMarksheetForGradeNineAndTen;
 use App\Helpers\GenerateMarksheetForGradeOneToThree;
@@ -227,7 +227,7 @@ class GenerateMarksheets extends Command
                     GenerateMarksheetForGradeOneToThree::generate($student, $currentTerm, $marks);
 
                     //now send these marks to pdf generator
-                } elseif ($currentTerm->grade->name >= 4 && $currentTerm->grade->name <= 8) {
+                } elseif ($currentTerm->grade->name == 4) {
 
                     $sortOrderForMainSubjects = ['Nepali', 'English', 'Mathematics', 'Science & Technology', 'Samajik Adhyayan', 'HPCA', 'Local Curriculum'];
 
@@ -238,7 +238,20 @@ class GenerateMarksheets extends Command
 
                     $marks = MarkSortAndMerge::sortAndMerge($casGradePointCollectionByStudent, $casGradeCollectionByStudent, $examGradePointCollectionByStudent, $examGradeCollectionByStudent, $sortOrderForMainSubjects, $sortOrderForCreditSubjects, $sortOrderForEcaSubjects, $totalGPACollectionConversion, $totalMarksCollectionByStudent);
                     dump("Generating marksheet of ". $student->name);
-                    GenerateMarksheetForGradeFourToEight::generate($student, $currentTerm, $marks);
+                    GenerateMarksheetForGradeFour::generate($student, $currentTerm, $marks);
+                    //now send these marks to pdf generator
+                } elseif ($currentTerm->grade->name >= 5 && $currentTerm->grade->name <= 8) {
+
+                    $sortOrderForMainSubjects = ['Nepali', 'English', 'Mathematics', 'Science & Technology', 'Samajik Adhyayan', 'HPCA', 'Local Curriculum'];
+
+                    $sortOrderForCreditSubjects = ['Sanskrit', 'Coding'];
+
+                    // $club = $student->subject()->get();
+                    $sortOrderForEcaSubjects = ['English Reading Book', 'Nepali Reading Book'];
+
+                    $marks = MarkSortAndMerge::sortAndMerge($casGradePointCollectionByStudent, $casGradeCollectionByStudent, $examGradePointCollectionByStudent, $examGradeCollectionByStudent, $sortOrderForMainSubjects, $sortOrderForCreditSubjects, $sortOrderForEcaSubjects, $totalGPACollectionConversion, $totalMarksCollectionByStudent);
+                    dump("Generating marksheet of ". $student->name);
+                    GenerateMarksheetForGradeFiveToEight::generate($student, $currentTerm, $marks);
                     //now send these marks to pdf generator
                 } elseif ($currentTerm->grade->name >= 9 && $currentTerm->grade->name <= 10) {
 
