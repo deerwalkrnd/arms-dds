@@ -7,7 +7,7 @@ use App\Models\Term;
 use setasign\Fpdi\Fpdi;
 use ZipArchive;
 
-class GenerateMarksheetForGradeFourToEight
+class GenerateMarksheetForGradeFour
 {
     public static function generate(Student $student, Term $term, $marks)
     {
