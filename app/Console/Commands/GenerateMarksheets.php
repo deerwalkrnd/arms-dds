@@ -8,7 +8,7 @@ use App\Helpers\GenerateMarksheetForGradeFiveToEight;
 use App\Helpers\GenerateMarksheetForGradeFour;
 use App\Helpers\GenerateMarksheetForGradeNineAndTen;
 use App\Helpers\GenerateMarksheetForGradeOneToThree;
-use App\Helpers\GenerateMarksheetForGradePreSchool;x
+use App\Helpers\GenerateMarksheetForGradePreSchool;
 use App\Mail\ResultMail;
 
 use App\Models\Cas;
