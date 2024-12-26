@@ -34,7 +34,7 @@ class Exam extends Model
         return $this->belongsTo(StudentExam::class, "student_exam_id");
     }
 
-    public static function gradeConversion(Subject $subject, int $mark)
+    public static function gradeConversion(Subject $subject, float $mark)
     {
         $theory = $subject->grade->school->theory_weightage;
 
@@ -62,7 +62,7 @@ class Exam extends Model
         }
     }
 
-    public static function gradePoint(Subject $subject, int $mark)
+    public static function gradePoint(Subject $subject, float $mark)
     {
         $theory = $subject->grade->school->theory_weightage;
 
