@@ -150,10 +150,9 @@ class GenerateMarksheets extends Command
                         }
 
 
+                    $totalPointMarks = $this->totalCasExamMarks($cumulativeCasMarkBySubject ?? 0, $examMarksBySubject->mark ?? 0);
 
-                    $totalPointMarks = $this->totalCasExamMarks($cumulativeCasMarkBySubject, $examMarksBySubject->mark ?? 0);
-
-                    $totalMarks = $this->totalSum($cumulativeCasMarkBySubject, $examMarksBySubject->mark ?? 0);
+                    $totalMarks = $this->totalSum($cumulativeCasMarkBySubject ?? 0, $examMarksBySubject->mark ?? 0);
 
                     $gradePointForExamMarks = Exam::gradePoint($subject, $examMarksBySubject->mark ?? 0);
 
