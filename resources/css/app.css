@@ -9,6 +9,22 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+
+.swal2-confirm {
+    background-color: #4F46E5 !important;
+    color: #fff !important;
+}
+
+.swal2-cancel {
+    background-color: #fb2424 !important;
+    color: #fff !important;
+}
+
+:root {
+    --swal2-confirm-button-background-color: #4F46E5;
+    --swal2-cancel-button-background-color: #fb2424;
+}
+
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
@@ -105,6 +121,7 @@ input[type=number] {
 .select2-container--default .select2-results__option:hover {
     background-color: #f0f0f0;
 }
+
 .select2-container--default .select2-selection--multiple:before {
     content: ' ';
     display: block;
@@ -115,8 +132,10 @@ input[type=number] {
     height: 0;
     right: 6px;
     margin-left: -4px;
-    margin-top: -2px;top: 50%;
-    width: 0;cursor: pointer
+    margin-top: -2px;
+    top: 50%;
+    width: 0;
+    cursor: pointer
 }
 
 .select2-container--open .select2-selection--multiple:before {
@@ -128,7 +147,8 @@ input[type=number] {
     height: 0;
     right: 6px;
     margin-left: -4px;
-    margin-top: -2px;top: 50%;
-    width: 0;cursor: pointer
-
+    margin-top: -2px;
+    top: 50%;
+    width: 0;
+    cursor: pointer
 }
