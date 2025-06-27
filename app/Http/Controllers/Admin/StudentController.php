@@ -14,6 +14,7 @@ use App\Helpers\ZipExtractor;
 use App\Models\Student;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -217,33 +218,41 @@ class StudentController extends Controller
 
     public function bulkUpload(Request $request)
     {
-        $request->validate([
-            'student_csv' => 'required|mimes:csv,xlsx,txt',
-            'zipFile' => 'required|mimes:zip'
-        ]);
-
-        $extension = $request->file('student_csv')->extension();
-        $zipFileExtension = $request->file('zipFile')->extension();
-        $fileName = time() . '.' . $extension;
-        $zipFileName = time() . '.' . $zipFileExtension;
-        $path = $request->file('student_csv')->storeAs('public/csv', $fileName);
-        $zipFilePath = $request->file('zipFile')->storeAs('public/zip', $zipFileName);
-        $extractZipFileToFolder = 'public/students';
-
+        DB::beginTransaction();
         try {
-            ZipExtractor::extractZip($extractZipFileToFolder, $zipFilePath);
+            $request->validate([
+                'student_csv' => 'required|mimes:csv,xlsx,txt',
+                'zipFile' => 'required|mimes:zip'
+            ]);
+
+            $extension = $request->file('student_csv')->extension();
+            $zipFileExtension = $request->file('zipFile')->extension();
+            $fileName = time() . '.' . $extension;
+            $zipFileName = time() . '.' . $zipFileExtension;
+            $path = $request->file('student_csv')->storeAs('public/csv', $fileName);
+            $zipFilePath = $request->file('zipFile')->storeAs('public/zip', $zipFileName);
+            $extractZipFileToFolder = 'public/students';
+
+            try {
+                ZipExtractor::extractZip($extractZipFileToFolder, $zipFilePath);
+            } catch (Exception $e) {
+                return redirect()->route('student.getBulkUpload')->with('error', $e->getMessage());
+            }
+
+            $studentImport = new StudentImport;
+
+            $studentImport->import($path);
+
+            if ($studentImport->failures()->isNotEmpty()) {
+                return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
+            }
+            Storage::delete($path);
+            DB::commit();
+            return redirect(route('students.index'))->with('success', 'Student Uploaded Successfully');
         } catch (Exception $e) {
-            return redirect()->route('student.getBulkUpload')->with('error', $e->getMessage());
+            DB::rollback();
+            Log::error($e->getMessage());
+            return redirect()->back()->withInput()->withErrors($e->getMessage());
         }
-
-        $studentImport = new StudentImport;
-
-        $studentImport->import($path);
-
-        if ($studentImport->failures()->isNotEmpty()) {
-            return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
-        }
-        Storage::delete($path);
-        return redirect(route('students.index'))->with('success', 'Student Uploaded Successfully');
     }
 }
