@@ -252,7 +252,7 @@ class StudentController extends Controller
         } catch (Exception $e) {
             DB::rollback();
             Log::error($e->getMessage());
-            return redirect()->back()->withInput()->withErrors($e->getMessage());
+            return redirect()->route('student.getBulkUpload')->withInput()->withErrors(["errors" => "Failed to upload students"]);
         }
     }
 }
