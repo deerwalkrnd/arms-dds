@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Anuzpandey\LaravelNepaliDate\LaravelNepaliDate;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\Term;
@@ -43,7 +44,9 @@ class GenerateMarksheetForGradeElevenToTwelve
             $pdf->SetXY(60, 18.68);
             $pdf->Write(0.1, strtoupper($term->name));
         }
-        $year = 2081;
+        $date = now()->format('Y-m-d');
+        $nepali_date = LaravelNepaliDate::from($date)->toNepaliDateArray();
+        $year = $nepali_date->year;
         $pdf->SetXY(137, 18.7);
         $pdf->Write(0.1, strtoupper($year));
 

@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Helpers;
 
+use Anuzpandey\LaravelNepaliDate\LaravelNepaliDate;
 use App\Models\Student;
 use App\Models\Term;
 use setasign\Fpdi\Fpdi;
@@ -40,7 +42,9 @@ class GenerateMarksheetForGradeNineAndTen
             $pdf->SetXY(60, 19.38);
             $pdf->Write(0.1, strtoupper($term->name));
         }
-        $year = 2081;
+        $date = now()->format('Y-m-d');
+        $nepali_date = LaravelNepaliDate::from($date)->toNepaliDateArray();
+        $year = $nepali_date->year;
         $pdf->SetXY(137, 19.38);
         $pdf->Write(0.1, strtoupper($year));
 
@@ -212,7 +216,7 @@ class GenerateMarksheetForGradeNineAndTen
         $pdf->Image($classTeacherSignature, 18, 243, 20, 20);
         $pdf->Image($principalSignature, 185, 243, 20, 20);
 
-       $outputFolder = storage_path("app/results/Grade " . $term->grade->name ." ".$term->name. "/");
+        $outputFolder = storage_path("app/results/Grade " . $term->grade->name . " " . $term->name . "/");
 
         if (!file_exists($outputFolder)) {
             mkdir($outputFolder, 0755, true);
@@ -237,8 +241,6 @@ class GenerateMarksheetForGradeNineAndTen
             $name = "Grade " . $term->grade->name . " " . $student->name . "_" . $student->roll_number . ".pdf";
 
             $zip->addFile($file_path, $name);
-
         }
-
     }
 }
