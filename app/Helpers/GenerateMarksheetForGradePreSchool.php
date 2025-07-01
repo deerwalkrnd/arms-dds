@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Anuzpandey\LaravelNepaliDate\LaravelNepaliDate;
 use App\Models\Student;
 use App\Models\Term;
 use setasign\Fpdi\Fpdi;
@@ -40,7 +41,9 @@ class GenerateMarksheetForGradePreSchool
             $pdf->SetXY(60, 18.68);
             $pdf->Write(0.1, strtoupper($term->name));
         }
-        $year = 2081;
+        $date = now()->format('Y-m-d');
+        $nepali_date = LaravelNepaliDate::from($date)->toNepaliDateArray();
+        $year = $nepali_date->year;
         $pdf->SetXY(137, 18.59);
         $pdf->Write(0.1, strtoupper($year));
 
@@ -115,7 +118,7 @@ class GenerateMarksheetForGradePreSchool
 
         // New logic for WGPA average
         $gradePointAverage = $mainSubjectCount > 0 ? number_format($gradePointSum / $totalCreditHour, 2) : "0.00";
-        
+
         $gradeBoundaries = [
             "3.6" => "A+",
             "3.2" => "A",
@@ -186,12 +189,12 @@ class GenerateMarksheetForGradePreSchool
             $initialYOffset += 12.2;
             $initalAvgYoffset += 12.2;
         }
-       
+
         $pdf->SetFont('ZapfDingbats', '', 10);
         $checkMark = "4";
 
         $x_positions = [53, 85, 122, 155, 187];
-        $y_positions = [172,178,184, 190, 196, 202, 208, 214, 220, 226,233,239,245];
+        $y_positions = [172, 178, 184, 190, 196, 202, 208, 214, 220, 226, 233, 239, 245];
 
         $i = 0;
         // foreach ($marks["ECA"] as $subject) {
@@ -206,7 +209,7 @@ class GenerateMarksheetForGradePreSchool
         $pdf->Image($classTeacherSignature, 18, 244, 20, 20);
         $pdf->Image($principalSignature, 185, 244, 20, 20);
 
-        $outputFolder = storage_path("app/results/Grade " . $term->grade->name ." ".$term->name. "/");
+        $outputFolder = storage_path("app/results/Grade " . $term->grade->name . " " . $term->name . "/");
 
         if (!file_exists($outputFolder)) {
             mkdir($outputFolder, 0755, true);
@@ -230,7 +233,5 @@ class GenerateMarksheetForGradePreSchool
 
             $zip->addFile($file_path, $name);
         }
-
-
     }
 }

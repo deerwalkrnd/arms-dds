@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Anuzpandey\LaravelNepaliDate\LaravelNepaliDate;
 use App\Models\Student;
 use App\Models\Term;
 use setasign\Fpdi\Fpdi;
@@ -41,7 +42,9 @@ class GenerateMarksheetForGradeFiveToEight
             $pdf->SetXY(60, 18.68);
             $pdf->Write(0.1, strtoupper($term->name));
         }
-        $year = 2081;
+        $date = now()->format('Y-m-d');
+        $nepali_date = LaravelNepaliDate::from($date)->toNepaliDateArray();
+        $year = $nepali_date->year;
         $pdf->SetXY(137, 18.42);
         $pdf->Write(0.1, strtoupper($year));
 
@@ -180,14 +183,14 @@ class GenerateMarksheetForGradeFiveToEight
             $pdf->Write(0.1, $subject['cas_mark']);
 
             // Add average row
-            $pdf->SetXY(178, 172.5+ $y_avgoffset);
+            $pdf->SetXY(178, 172.5 + $y_avgoffset);
             $pdf->Write(0.1, $subject['average_point']);
 
 
             $initialYOffset += 12.7;
             $initalAvgYoffset += 12.8;
         }
-       
+
         $pdf->SetFont('ZapfDingbats', '', 10);
         $checkMark = "4";
 
@@ -218,7 +221,7 @@ class GenerateMarksheetForGradeFiveToEight
         $pdf->Image($classTeacherSignature, 18, 243, 20, 20);
         $pdf->Image($principalSignature, 185, 243, 20, 20);
 
-        $outputFolder = storage_path("app/results/Grade " . $term->grade->name ." ".$term->name. "/");
+        $outputFolder = storage_path("app/results/Grade " . $term->grade->name . " " . $term->name . "/");
 
         if (!file_exists($outputFolder)) {
             mkdir($outputFolder, 0755, true);
@@ -242,8 +245,5 @@ class GenerateMarksheetForGradeFiveToEight
 
             $zip->addFile($file_path, $name);
         }
-
-
     }
-
 }
