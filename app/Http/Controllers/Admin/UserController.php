@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -43,6 +44,7 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
+        DB::beginTransaction();
         $input = $request->validated();
 
         $initialPassword = Str::random(8);
@@ -77,8 +79,10 @@ class UserController extends Controller
             }
             Mail::to($result->email)->send(new UserCredentailMail($result, $user_roles, $initialPassword));
 
+            DB::commit();
             return redirect(route("users.index"))->with("success", "User Created Successfully");
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e->getMessage());
 
             return redirect()->back()->withInput()->withErrors(["Error" => "Failed to create User"]);
@@ -110,6 +114,7 @@ class UserController extends Controller
 
     public function update(UserRequest $request, $id)
     {
+        DB::beginTransaction();
         $input = $request->validated();
         try {
             $user = User::findOrFail($id);
@@ -135,9 +140,12 @@ class UserController extends Controller
             $user->update($input);
 
             $user->roles()->sync($input['roles']);
+            
+            DB::commit();
 
             return redirect(route('users.index'))->with('success', 'User updated successfully');
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e->getMessage());
             return redirect()->back()->withInput()->withErrors(["Error" => "Failed to update User"]);
         }
