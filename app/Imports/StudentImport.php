@@ -54,7 +54,7 @@ class StudentImport implements ToCollection, WithHeadingRow, SkipsOnError, Skips
                     "guardian_contact" => ["required"],
                     "email" => ["required", "email"],
                     "emis_no" => ["required"],
-                    "reg_no" => ["string", "nullable"],
+                    "reg_no" => ["nullable"],
                     "fathers_profession" => ["string"],
                     "mothers_profession" => ["string"],
                     "guardians_profession" => ["string"],
