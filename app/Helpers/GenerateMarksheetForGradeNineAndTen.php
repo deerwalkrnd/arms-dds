@@ -137,7 +137,7 @@ class GenerateMarksheetForGradeNineAndTen
         });
 
         foreach ($gradeBoundaries as $boundary => $grade) {
-            if ($gradePointAverage > floatval($boundary)) {
+            if ($gradePointAverage >= floatval($boundary)) {
 
                 $gradeAverage = $grade;
                 break;
