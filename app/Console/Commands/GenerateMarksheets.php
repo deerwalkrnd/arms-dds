@@ -88,10 +88,10 @@ class GenerateMarksheets extends Command
                     //maybe we should put the filter for subjecttype here
                     if ($subject->type == "MAIN" || $subject->type == "CREDIT") {
                         $cumulativeCasMarkBySubject = Cas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
-                        
+
                         $gradePointBySubjectForCas = Cas::gradePoint($subject, $cumulativeCasMarkBySubject);
                         $gradeConversionForCas = Cas::gradeConversion($subject, $cumulativeCasMarkBySubject);
-                    } 
+                    }
                     // elseif ($subject->type == "ECA") {
                     //     $cumulativeCasMarkBySubject = EcaCas::calculateTotalMarksPerSubjectTeacher($subject->id, $student->id, $currentTerm->start_date, $currentTerm->end_date);
                     //     $gradePointBySubjectForCas = EcaCas::gradePoint($subject, $cumulativeCasMarkBySubject);
@@ -130,7 +130,7 @@ class GenerateMarksheets extends Command
                     //     ->where('created_at', '<=', $currentTerm->result_date)
                     //     ->first();
 
-                   
+
                         $examMarksBySubject = Exam::with(['studentExam.student', 'subjectTeacher.subject'])
                             ->whereHas('studentExam.student', function (Builder $query) use ($student) {
                                 $query->where('id', $student->id);
@@ -141,23 +141,25 @@ class GenerateMarksheets extends Command
                             ->where("term_id", $currentTerm->id)
                             ->first();
 
+                    if (! $examMarksBySubject) {
 
-                        if (!$examMarksBySubject) {
+                        Log::info('Exam Marks doesnot exist for '.$student->name.' of Subject '.$subject->name.'    Automatically set to 0');
 
-                            Log::info("Exam Marks doesnot exist for " . $student->name . " of Subject " . $subject->name . "    Automatically set to 0");
-
-                            $examMarksBySubject = 0;
-                        }
-
-
-                    $totalPointMarks = $this->totalCasExamMarks($cumulativeCasMarkBySubject ?? 0, $examMarksBySubject->mark ?? 0);
-
-                    $totalMarks = $this->totalSum($cumulativeCasMarkBySubject ?? 0, $examMarksBySubject->mark ?? 0);
+                        $examMarksBySubject = 0;
+                    }
 
                     $gradePointForExamMarks = Exam::gradePoint($subject, $examMarksBySubject->mark ?? 0);
 
                     $gradeConversionForExamMarks = Exam::gradeConversion($subject, $examMarksBySubject->mark ?? 0);
 
+                    // Check if either CAS or Exam grade is NG before calculating average
+                    if ($gradeConversionForCas == 'NG' || $gradeConversionForExamMarks == 'NG') {
+                        $totalPointMarks = 'NG';
+                        $totalMarks = 'NG';
+                    } else {
+                        $totalPointMarks = $this->totalCasExamMarks($cumulativeCasMarkBySubject ?? 0, $examMarksBySubject->mark ?? 0);
+                        $totalMarks = $this->totalSum($cumulativeCasMarkBySubject ?? 0, $examMarksBySubject->mark ?? 0);
+                    }
 
                     // put into the collection
                     $totalGPACollectionConversion->push(['average_point' => $totalPointMarks, 'type' => $subject->type, 'name' => $subject->name]);
@@ -171,7 +173,7 @@ class GenerateMarksheets extends Command
                         $casGradePointCollectionByStudent->push(['cas_mark' => $gradePointBySubjectForCas, 'type' => $subject->type, 'name' => $subject->name, 'credit_hour' => $subject->credit_hr]);
 
                         $casGradeCollectionByStudent->push(['cas_grade' => $gradeConversionForCas, 'type' => $subject->type, 'name' => $subject->name]);
-                    } 
+                    }
                     // elseif ($subject->type == "ECA" || $subject->type == "Reading_Book") {
                     //     $casGradePointCollectionByStudent->push(['cas_mark' => $gradePointBySubjectForCas, 'type' => "ECA", 'name' => $subject->name, 'credit_hour' => $subject->credit_hr]);
                     //     $casGradeCollectionByStudent->push(['cas_grade' => $gradeConversionForCas, 'type' => "ECA", 'name' => $subject->name]);
@@ -185,14 +187,13 @@ class GenerateMarksheets extends Command
                     //     }
                     // }
 
-
                     $examGradePointCollectionByStudent->push(['exam_mark' => $gradePointForExamMarks, 'type' => $subject->type, 'name' => $subject->name]);
 
                     $examGradeCollectionByStudent->push(['exam_grade' => $gradeConversionForExamMarks, 'type' => $subject->type, 'name' => $subject->name]);
 
                 }
 
-                
+
                 // now order the marks according to the order of result
                 if ($currentTerm->grade->name == "Nursery" || $currentTerm->grade->name == "Prep I" || $currentTerm->grade->name == "Prep II") {
 
@@ -204,7 +205,7 @@ class GenerateMarksheets extends Command
 
                     $marks = MarkSortAndMerge::sortAndMerge($casGradePointCollectionByStudent, $casGradeCollectionByStudent, $examGradePointCollectionByStudent, $examGradeCollectionByStudent, $sortOrderForMainSubjects, $sortOrderForCreditSubjects, $sortOrderForEcaSubjects, $totalGPACollectionConversion, $totalMarksCollectionByStudent);
 
-                   
+
                     dump("Generating marksheet of ". $student->name);
                     Log::error($marks);
                     GenerateMarksheetForGradePreSchool::generate($student, $currentTerm, $marks);
@@ -220,7 +221,7 @@ class GenerateMarksheets extends Command
 
                     $marks = MarkSortAndMerge::sortAndMerge($casGradePointCollectionByStudent, $casGradeCollectionByStudent, $examGradePointCollectionByStudent, $examGradeCollectionByStudent, $sortOrderForMainSubjects, $sortOrderForCreditSubjects, $sortOrderForEcaSubjects, $totalGPACollectionConversion, $totalMarksCollectionByStudent);
 
-                   
+
                     dump("Generating marksheet of ". $student->name);
                     Log::error($marks);
                     GenerateMarksheetForGradeOneToThree::generate($student, $currentTerm, $marks);

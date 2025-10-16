@@ -72,13 +72,10 @@ class GenerateMarksheetForGradeNineAndTen
             $y_offset = $initialYOffset;
             $y_avgoffset = $initalAvgYoffset;
 
-            if ($subject['exam_grade'] == "NG") {
+            if ($subject['exam_grade'] == "NG" || $subject['average_point'] == 'NG' || $subject['cas_grade'] == "NG") {
                 $hasFailed = true;
             }
 
-            if ($subject['cas_grade'] == "NG") {
-                $hasFailed = true;
-            }
 
             $pdf->SetXY(82, 53.85 + $y_avgoffset);
             $pdf->Write(0.1, $subject['credit_hour']);
@@ -104,13 +101,15 @@ class GenerateMarksheetForGradeNineAndTen
 
 
             // New: Weighted GPA for credit based GPA calculation
-            $wgpa = (float) $subject['average_marks'] * (float) $subject['credit_hour'];
+            // Skip subjects with NG average marks from GPA calculation
+            if ($subject['average_marks'] !== 'NG' && $subject['average_point'] !== 'NG') {
+                $wgpa = (float) $subject['average_marks'] * (float) $subject['credit_hour'];
 
-            $subject['average_marks'] = round($wgpa, 2);
-            $totalCreditHour += $subject['credit_hour'];
+                $subject['average_marks'] = round($wgpa, 2);
+                $totalCreditHour += $subject['credit_hour'];
 
-            $gradePointSum += floatval($subject['average_marks']);
-
+                $gradePointSum += floatval($subject['average_marks']);
+            }
 
             $initialYOffset += 12.6;
             $initalAvgYoffset += 12.6;
