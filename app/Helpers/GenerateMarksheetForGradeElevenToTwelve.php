@@ -74,11 +74,7 @@ class GenerateMarksheetForGradeElevenToTwelve
             $y_offset = $initialYOffset;
             $y_avgoffset = $initalAvgYoffset;
 
-            if ($subject['exam_grade'] == "NG") {
-                $hasFailed = true;
-            }
-
-            if ($subject['cas_grade'] == "NG") {
+            if ($subject['exam_grade'] == "NG" || $subject['cas_grade'] == "NG" || $subject['average_point'] == 'NG') {
                 $hasFailed = true;
             }
 
@@ -106,12 +102,14 @@ class GenerateMarksheetForGradeElevenToTwelve
 
 
             // New: Weighted GPA for credit based GPA calculation
-            $wgpa = (float) $subject['average_marks'] * (float) $subject['credit_hour'];
+            if ($subject['average_marks'] !== 'NG' && $subject['average_point'] !== 'NG') {
+                $wgpa = (float) $subject['average_marks'] * (float) $subject['credit_hour'];
 
-            $subject['average_marks'] = round($wgpa, 2);
-            $totalCreditHour += $subject['credit_hour'];
+                $subject['average_marks'] = round($wgpa, 2);
+                $totalCreditHour += $subject['credit_hour'];
 
-            $gradePointSum += floatval($subject['average_marks']);
+                $gradePointSum += floatval($subject['average_marks']);
+            }
 
 
             $initialYOffset += 12.7;
@@ -140,7 +138,7 @@ class GenerateMarksheetForGradeElevenToTwelve
         });
 
         foreach ($gradeBoundaries as $boundary => $grade) {
-            if ($gradePointAverage > floatval($boundary)) {
+            if ($gradePointAverage >= floatval($boundary)) {
 
                 $gradeAverage = $grade;
                 break;
@@ -185,14 +183,14 @@ class GenerateMarksheetForGradeElevenToTwelve
             $pdf->Write(0.1, $subject['cas_mark']);
 
             // Add average row
-            $pdf->SetXY(178, 172.5+ $y_avgoffset);
+            $pdf->SetXY(178, 172.5 + $y_avgoffset);
             $pdf->Write(0.1, $subject['average_point']);
 
 
             $initialYOffset += 12.7;
             $initalAvgYoffset += 12.8;
         }
-       
+
         $pdf->SetFont('ZapfDingbats', '', 10);
         $checkMark = "4";
 
@@ -207,15 +205,15 @@ class GenerateMarksheetForGradeElevenToTwelve
             $pdf->setXY($x_positions[$index], $y_positions[$i]);
             $pdf->Write(0.1, $checkMark);
 
-            if($subject['type']=='Club_1_HS'){
+            if ($subject['type'] == 'Club_1_HS') {
                 $pdf->setFont('Times', '', '12');
-                $pdf->setXY(11.8,228.5);
+                $pdf->setXY(11.8, 228.5);
                 $pdf->Write(0.1, $subject['name']);
                 $pdf->SetFont('ZapfDingbats', '', 10);
             }
-            if($subject['type']=='Club_2_HS'){
+            if ($subject['type'] == 'Club_2_HS') {
                 $pdf->setFont('Times', '', '12');
-                $pdf->setXY(11.8,228.5);
+                $pdf->setXY(11.8, 228.5);
                 $pdf->Write(0.1, $subject['name']);
                 $pdf->SetFont('ZapfDingbats', '', 10);
             }
@@ -225,7 +223,7 @@ class GenerateMarksheetForGradeElevenToTwelve
         $pdf->Image($classTeacherSignature, 18, 243, 20, 20);
         $pdf->Image($principalSignature, 185, 243, 20, 20);
 
-        $outputFolder = storage_path("app/results/Grade " . $term->grade->name . " " . $term->name ."/");
+        $outputFolder = storage_path("app/results/Grade " . $term->grade->name . " " . $term->name . "/");
 
         if (!file_exists($outputFolder)) {
             mkdir($outputFolder, 0755, true);

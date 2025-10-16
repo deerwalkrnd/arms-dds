@@ -72,11 +72,7 @@ class GenerateMarksheetForGradeFiveToEight
             $y_offset = $initialYOffset;
             $y_avgoffset = $initalAvgYoffset;
 
-            if ($subject['exam_grade'] == "NG") {
-                $hasFailed = true;
-            }
-
-            if ($subject['cas_grade'] == "NG") {
+            if ($subject['exam_grade'] == "NG" || $subject['average_point'] == 'NG' || $subject['cas_grade'] == "NG") {
                 $hasFailed = true;
             }
 
@@ -138,7 +134,7 @@ class GenerateMarksheetForGradeFiveToEight
         });
 
         foreach ($gradeBoundaries as $boundary => $grade) {
-            if ($gradePointAverage > floatval($boundary)) {
+            if ($gradePointAverage >= floatval($boundary)) {
 
                 $gradeAverage = $grade;
                 break;

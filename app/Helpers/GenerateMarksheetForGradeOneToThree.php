@@ -74,11 +74,7 @@ class GenerateMarksheetForGradeOneToThree
             $y_offset = $initialYOffset;
             $y_avgoffset = $initalAvgYoffset;
 
-            if ($subject['exam_grade'] == "NG") {
-                $hasFailed = true;
-            }
-
-            if ($subject['cas_grade'] == "NG") {
+            if ($subject['exam_grade'] == "NG" || $subject['cas_grade'] == "NG" || $subject['average_point'] == 'NG') {
                 $hasFailed = true;
             }
 
@@ -106,12 +102,15 @@ class GenerateMarksheetForGradeOneToThree
 
 
             // New: Weighted GPA for credit based GPA calculation
-            $wgpa = (float) $subject['average_marks'] * (float) $subject['credit_hour'];
+            // Skip subjects with NG average marks from GPA calculation
+            if ($subject['average_marks'] !== 'NG' && $subject['average_point'] !== 'NG') {
+                $wgpa = (float) $subject['average_marks'] * (float) $subject['credit_hour'];
 
-            $subject['average_marks'] = round($wgpa, 2);
-            $totalCreditHour += $subject['credit_hour'];
+                $subject['average_marks'] = round($wgpa, 2);
+                $totalCreditHour += $subject['credit_hour'];
 
-            $gradePointSum += floatval($subject['average_marks']);
+                $gradePointSum += floatval($subject['average_marks']);
+            }
 
 
             $initialYOffset += 12.2;
@@ -140,7 +139,7 @@ class GenerateMarksheetForGradeOneToThree
         });
 
         foreach ($gradeBoundaries as $boundary => $grade) {
-            if ($gradePointAverage > floatval($boundary)) {
+            if ($gradePointAverage >= floatval($boundary)) {
 
                 $gradeAverage = $grade;
                 break;
